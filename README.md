@@ -4,7 +4,7 @@ Zipstagram Web Client
 
 ## Progress
 
-- [ ] Router (Pending)
-- [ ] Authentication
+- [X] Router
+- [ ] Authentication (Pending)
 - [ ] Architecture
 - [ ] Styles
