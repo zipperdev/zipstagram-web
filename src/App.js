@@ -9,6 +9,7 @@ import Home from "./screens/Home";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
 import NotFound from "./screens/NotFound";
+import Layout from "./components/Layout";
 import { client } from "./apollo";
 import routes from "./routes";
 
@@ -23,13 +24,17 @@ function App() {
                     <Router>
                         <Switch>
                             <Route path={routes.home} exact>
-                                {isLoggedIn ? <Home /> : <Login />}
+                                {isLoggedIn ? (
+                                    <Layout>
+                                        <Home />
+                                    </Layout>
+                                ) : <Login />}
                             </Route>
                             {!isLoggedIn ? (
                                 <Route path={routes.signUp} exact>
                                     <SignUp />
                                 </Route>
-                            ): null}
+                            ) : null}
                             <Route>
                                 <NotFound />
                             </Route>

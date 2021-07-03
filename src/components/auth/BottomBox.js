@@ -12,6 +12,7 @@ const Container = styled(BaseBox)`
         margin-left: 6px;
         font-weight: 600;
         color: ${props => props.theme.accent};
+        text-decoration: underline;
     }
 `;
 

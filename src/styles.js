@@ -5,6 +5,7 @@ export const lightTheme = {
     bgColor: "#fafafa",
     fontColor: "#1c1c1c",
     mudColor: "#ffffff",
+    swapColor: "#2c2c2c",
     weightColor: "#303030",
     accent: "#0095f6",
     focusBorderColor: "rgb(38, 38, 38)",
@@ -15,6 +16,7 @@ export const darkTheme = {
     bgColor: "#2c2c2c",
     fontColor: "#fafafa",
     mudColor: "#000000",
+    swapColor: "#eaeaea",
     weightColor: "#e0e0e0",
     accent: "#0095f6",
     focusBorderColor: "rgb(80, 80, 80)",
@@ -25,6 +27,7 @@ export const GlobalStyles = createGlobalStyle`
     ${reset}
     * {
         box-sizing: border-box;
+        text-decoration: none;
     }
     body {
         background-color: ${props => props.theme.bgColor};

@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faSun } from "@fortawesome/free-regular-svg-icons";
+import { FiSun, FiMoon } from "react-icons/fi";
 import { useReactiveVar } from "@apollo/client";
 import { darkModeVar, disableDarkMode, enableDarkMode } from "../apollo";
 import logoLight from "../contents/logo_light.png";
@@ -40,7 +39,7 @@ const StyledLogoImage = styled.div`
     background-repeat: no-repeat;
     background-image: url(${props => props.theme.mudColor === "#000000" ? logoLight : logoDark});
 `;
-export const LogoImage = (props) => <StyledLogoImage></StyledLogoImage>;
+export const LogoImage = () => <StyledLogoImage></StyledLogoImage>;
 
 
 const StyledDarkModeBtn = styled.span`
@@ -50,7 +49,11 @@ export function DarkModeBtn() {
     const darkMode = useReactiveVar(darkModeVar);
     return (
         <StyledDarkModeBtn onClick={darkMode ? disableDarkMode : enableDarkMode}>
-            <FontAwesomeIcon icon={darkMode ? faSun : faMoon} />
+            {darkMode ? (
+                <FiSun size={20} />
+            ) : (
+                <FiMoon size={20} />
+            )}
         </StyledDarkModeBtn>
     );
 };

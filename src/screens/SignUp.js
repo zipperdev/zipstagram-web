@@ -99,14 +99,14 @@ function SignUp() {
                     <Input onChange={clearLoginError} ref={register({
                         required: "First name is required.",
                         validate: currrentValue => currrentValue.length < 40
-                    })} errorMessage={errors?.firstName?.type ? "First name must be shorter than 40." : errors?.firstName?.message} name="firstName" type="text" placeholder="First Name" />
+                    })} errorMessage={errors?.firstName?.type === "validate" ? "First name must be shorter than 40." : errors?.firstName?.message} name="firstName" type="text" placeholder="First Name" />
                     <Input onChange={clearLoginError} ref={register({
                         validate: currrentValue => currrentValue.length < 40
-                    })} errorMessage={errors?.lastName?.type ? "Last name must be shorter than 40." : errors?.lastName?.message} name="lastName" type="text" placeholder="Last Name" />
+                    })} errorMessage={errors?.lastName?.type === "validate" ? "Last name must be shorter than 40." : errors?.lastName?.message} name="lastName" type="text" placeholder="Last Name" />
                     <Input onChange={clearLoginError} ref={register({
                         required: "Username is required.",
                         validate: currrentValue => currrentValue.length < 40
-                    })} errorMessage={errors?.username?.type ? "Username must be shorter than 40." : errors?.username?.message} name="username" type="text" placeholder="Username" />
+                    })} errorMessage={errors?.username?.type === "validate" ? "Username must be shorter than 40." : errors?.username?.message} name="username" type="text" placeholder="Username" />
                     <Input onChange={clearLoginError} ref={register({
                         required: "Email address is required.",
                         pattern: {
@@ -117,7 +117,7 @@ function SignUp() {
                     <Input onChange={clearLoginError} ref={register({
                         required: "Password is required.",
                         validate: currentValue => currentValue.length >= 8
-                    })} errorMessage={errors?.password?.type ? "Password must be longger than 7." : errors?.password?.message} name="password" type="password" placeholder="Password" />
+                    })} errorMessage={errors?.password?.type === "validate" ? "Password must be longger than 7." : errors?.password?.message} name="password" type="password" placeholder="Password" />
                     <Input onChange={clearLoginError} ref={register({
                         required: "Password confrimation is required.",
                         validate: currrentValue => {
