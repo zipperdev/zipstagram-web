@@ -12,9 +12,9 @@ export const BaseBox = styled.div`
     width: 100%;
 `;
 
-export const WeightLink = styled.span`
+export const WeightText = styled.span`
     font-weight: 600;
-    color: ${props => props.theme.weightColor};
+    color: ${props => props.theme.fontColor};
 `;
 
 const StyledNotification = styled.div`
@@ -37,7 +37,7 @@ const StyledLogoImage = styled.div`
     height: 60px;
     background-size: 100%;
     background-repeat: no-repeat;
-    background-image: url(${props => props.theme.mudColor === "#000000" ? logoLight : logoDark});
+    background-image: url(${props => props.theme.mudColor === "#ffffff" ? logoDark : logoLight});
 `;
 export const LogoImage = () => <StyledLogoImage></StyledLogoImage>;
 

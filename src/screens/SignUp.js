@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
-import { WeightLink, LogoImage } from "../components/shared";
+import { WeightText, LogoImage } from "../components/shared";
 import PageTitle from "../components/PageTitle";
 import HeaderContainer from "../components/auth/HeaderContainer";
 import AuthLayout from "../components/auth/AuthLayout";
@@ -13,7 +13,7 @@ import Button from "../components/auth/SubmitButton";
 import Input from "../components/auth/Input";
 import routes from "../routes";
 
-const Subtitle = styled(WeightLink)`
+const Subtitle = styled(WeightText)`
     margin-top: 10px;
     font-size: 13px;
     width: 220px;
