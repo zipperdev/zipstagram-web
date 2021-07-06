@@ -63,11 +63,26 @@ function Comments({ photoId, author, caption, commentCount, comments }) {
                             ...userData.me
                         }
                     };
+                    const newCacheComment = cache.writeFragment({
+                        data: newComment,
+                        fragment: gql`
+                            fragment NewComment on Comment {
+                                id
+                                createdAt
+                                isMing
+                                payload
+                                user {
+                                    username
+                                    avatar
+                                }
+                            }
+                        `
+                    });
                     return cache.modify({
                         id: `Photo:${photoId}`,
                         fields: {
                             comments(prev) {
-                                return [...prev, newComment];
+                                return [...prev, newCacheComment];
                             },
                             commentCount(prev) {
                                 return prev + 1;
@@ -96,7 +111,7 @@ function Comments({ photoId, author, caption, commentCount, comments }) {
             <Comment author={author} payload={caption} />
             <CommentCount>{commentCount} {commentCount <= 1 ? "comment" : "comments"}</CommentCount>
             {comments?.map(comment => (
-                <Comment key={comment.id} author={comment.user.username} payload={comment.payload} />
+                <Comment key={comment.id} id={comment.id} photoId={photoId} isMine={comment.isMine} author={comment.user.username} payload={comment.payload} />
             ))}
             <div>
                 <Form onSubmit={handleSubmit(onValid)}>
