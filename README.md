@@ -5,6 +5,6 @@ Zipstagram Web Client
 ## Progress
 
 - [x] Log In / Sign Up
-- [ ] Feed
+- [x] Feed
 - [ ] Profile
 - [ ] See Hashtag
