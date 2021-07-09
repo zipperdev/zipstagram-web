@@ -8,6 +8,7 @@ import { darkTheme, GlobalStyles, lightTheme } from "./styles";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
+import Profile from "./screens/Profile";
 import NotFound from "./screens/NotFound";
 import Layout from "./components/Layout";
 import { client } from "./apollo";
@@ -35,6 +36,11 @@ function App() {
                                     <SignUp />
                                 </Route>
                             ) : null}
+                            <Route path={`/users/:username`}>
+                                <Layout>
+                                    <Profile />
+                                </Layout>
+                            </Route>
                             <Route>
                                 <NotFound />
                             </Route>

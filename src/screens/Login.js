@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import { logUserIn } from "../apollo";
@@ -25,6 +25,7 @@ const LOGIN_MUTATION = gql`
 
 function Login() {
     const location = useLocation();
+    const history = useHistory();
     const { register, handleSubmit, formState, errors, getValues, setError, clearErrors } = useForm({
         mode: "onChange",
         defaultValues: {
@@ -40,7 +41,7 @@ function Login() {
                     message: error
                 });
             } else {
-                return logUserIn(token);
+                return logUserIn(token, history);
             };
         }
     });

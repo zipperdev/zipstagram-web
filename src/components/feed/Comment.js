@@ -69,7 +69,9 @@ function Comment({ id, photoId, isMine, author, payload }) {
     };
     return (
         <CommentContainer>
-            <WeightText>{author}</WeightText>
+            <Link to={`/users/${author}`}>
+                <WeightText>{author}</WeightText>
+            </Link>
             <CommentCaption>{
                 payload.split(" ").map((word, index) =>
                     /#[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|\w]+/g.test(word) ? (

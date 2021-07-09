@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -97,8 +98,12 @@ function Photo({ id, user, file, isLiked, likes, caption, commentCount, comments
     return (
         <PhotoContainer key={id}>
             <PhotoHeader>
-                <Avatar size="30px" url={user.avatar} />
-                <Username>{user.username}</Username>
+                <Link to={`/users/${user.username}`}>
+                    <Avatar size="30px" url={user.avatar} />
+                </Link>
+                <Link to={`/users/${user.username}`}>
+                    <Username>{user.username}</Username>
+                </Link>
             </PhotoHeader>
             <PhotoFile src={file} alt="Photo" />
             <PhotoData>

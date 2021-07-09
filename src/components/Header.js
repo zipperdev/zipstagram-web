@@ -68,7 +68,9 @@ function Header() {
                                 <FiCompass size={18} />
                             </Icon>
                             <Icon>
-                                <Avatar size="20px" url={data?.me?.avatar} />
+                                <Link to={`/users/${data?.me?.username}`}>
+                                    <Avatar size="20px" url={data?.me?.avatar} />
+                                </Link>
                             </Icon>
                         </IconsContiner>
                     ) : <Link to={routes.home}><Button>Login</Button></Link>}

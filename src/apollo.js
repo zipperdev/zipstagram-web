@@ -5,12 +5,19 @@ const TOKEN = "TOKEN";
 const DARK_MODE = "DARK_MODE";
 
 export const isLoggedInVar = makeVar(Boolean(localStorage.getItem(TOKEN)));
-export const logUserIn = token => {
+export const logUserIn = (token, history) => {
     localStorage.setItem(TOKEN, token);
+    if (history) {
+        history.replace();
+    };
+    window.location.reload();
     isLoggedInVar(true);
 };
-export const logUserOut = () => {
+export const logUserOut = (history) => {
     localStorage.removeItem(TOKEN);
+    if (history) {
+        history.replace();
+    };
     window.location.reload();
     isLoggedInVar(false);
 };
@@ -39,5 +46,11 @@ const authLink = setContext((_, { headers }) => {
 });
 export const client = new ApolloClient({
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache()
+    cache: new InMemoryCache({
+        typePolicies: {
+            User: {
+                keyFields: obj => `User:${obj.username}`
+            }
+        }
+    })
 });
