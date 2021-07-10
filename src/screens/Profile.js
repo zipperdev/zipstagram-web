@@ -1,10 +1,28 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { FaRegHeart, FiMessageSquare } from "react-icons/all";
-import { gql, useQuery } from "@apollo/client";
+import { FaHeart, FaRegHeart, FiMessageSquare } from "react-icons/all";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import styled from "styled-components";
+import Button from "../components/Button";
 import { PHOTO_FRAGMENT } from "../fragments";
-import Avatar from '../components/Avatar';
+import PageTitle from "../components/PageTitle";
+import useUser from "../hooks/useUser";
+
+const FOLLOW_USER_MUTATION = gql`
+    mutation followUser($username: String!) {
+        followUser(username: $username) {
+            success
+        }
+    }
+`;
+
+const UNFOLLOW_USER_MUTATION = gql`
+    mutation unfollowUser($username: String!) {
+        unfollowUser(username: $username) {
+            success
+        }
+    }
+`;
 
 const SEE_PROFILE_QUERY = gql`
     query seeProfile($username: String!) {
@@ -30,29 +48,59 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
-    `;
+`;
 
 const ProfileContainer = styled.div`
+    position: relative;
     display: flex;
     align-items: center;
-    `;
+`;
+
+const ProfileButton = styled(Button)`
+    width: 100px;
+    position: absolute;
+    margin-top: -2px;
+    margin-left: 10px;
+`;
+
+const Avatar = styled.div`
+    margin-right: 60px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background-color: ${props => props.theme.swapColor};
+    overflow: hidden;
+`;
+
+const Image = styled.img`
+    max-width: 100%;
+    max-height: 100%;
+`;
 
 const ProfileDescContainer = styled.div`
-    position: relative;
     height: 150px;
-    margin-left: 140px;
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
+`;
+
+const TopBox = styled.div`
+    display: flex;
+`;
+
+const BottomBox = styled.div`
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 `;
 
 const Username = styled.h1`
     font-size: 30px;
-    margin-bottom: 20px;
 `;
 
 const FollowContainer = styled.div`
     display: flex;
-    margin-bottom: 20px;
 `;
 
 const Followers = styled.h3`
@@ -75,8 +123,6 @@ const RealName = styled.h2`
 
 const BioText = styled.p`
     font-size: 14px;
-    position: absolute;
-    bottom: 10px;
 `;
 
 const PhotosContainer = styled.div`
@@ -127,23 +173,108 @@ const IconText = styled.h6`
 
 function Profile() {
     const { username } = useParams();
-    const { data } = useQuery(SEE_PROFILE_QUERY, {
+    const { data: userData } = useUser();
+    const { data, loading } = useQuery(SEE_PROFILE_QUERY, {
         variables: {
             username
         }
     });
+    const [followUser] = useMutation(FOLLOW_USER_MUTATION, {
+        variables: {
+            username
+        },
+        update: (cache, result) => {
+            const { data: { followUser: { success } } } = result;
+            if (!success) {
+                return;
+            } else {
+                cache.modify({
+                    id: `User:${username}`,
+                    fields: {
+                        isFollowing() {
+                            return true;
+                        },
+                        totalFollowers(prev) {
+                            return prev + 1;
+                        }
+                    }
+                });
+                const { me } = userData;
+                cache.modify({
+                    id: `User:${me.username}`,
+                    fields: {
+                        totalFollowing(prev) {
+                            return prev + 1;
+                        }
+                    }
+                });
+            };
+        }
+    });
+    const [unfollowUser] = useMutation(UNFOLLOW_USER_MUTATION, {
+        variables: {
+            username
+        },
+        update: (cache, result) => {
+            const { data: { unfollowUser: { success } } } = result;
+            if (!success) {
+                return;
+            } else {
+                cache.modify({
+                    id: `User:${username}`,
+                    fields: {
+                        isFollowing() {
+                            return false;
+                        },
+                        totalFollowers(prev) {
+                            return prev - 1;
+                        }
+                    }
+                });
+                const { me } = userData;
+                cache.modify({
+                    id: `User:${me.username}`,
+                    fields: {
+                        totalFollowing(prev) {
+                            return prev - 1;
+                        }
+                    }
+                });
+            };
+        }
+    });
+    const getButton = (seeProfile) => {
+        const { isMe, isFollowing } = seeProfile;
+        if (isMe) {
+            return <ProfileButton>Edit Profile</ProfileButton>
+        } else if (isFollowing) {
+            return <ProfileButton onClick={unfollowUser}>Unfollow</ProfileButton>
+        } else {
+            return <ProfileButton onClick={followUser}>Follow</ProfileButton>
+        };
+    };
     return (
         <Container>
+            <PageTitle title={loading ? "Loading..." : `${data?.seeProfile?.username}'s Profile`} />
             <ProfileContainer>
-                <Avatar size="150px" url={data?.seeProfile?.avatar} />
+                <Avatar>
+                    {data?.seeProfile?.avatar ? <Image src={data?.seeProfile?.avatar} alt="Avatar" /> : null}
+                </Avatar>
                 <ProfileDescContainer>
-                    <Username>{data?.seeProfile?.username}</Username>
-                    <FollowContainer>
-                        <Followers><Strong>{data?.seeProfile?.totalFollowers}</Strong> followers</Followers>
-                        <Following><Strong>{data?.seeProfile?.totalFollowing}</Strong> following</Following>
-                    </FollowContainer>
-                    <RealName>{data?.seeProfile?.firstName} {data?.seeProfile?.lastName}</RealName>
-                    <BioText>{data?.seeProfile?.bio}</BioText>
+                    <TopBox>
+                        <Username>{data?.seeProfile?.username}</Username>
+                        {data?.seeProfile ? getButton(data.seeProfile) : null}
+                    </TopBox>
+                    <BottomBox>
+                        <FollowContainer>
+                            <Followers><Strong>{data?.seeProfile?.totalFollowers}</Strong> followers</Followers>
+                            <Following><Strong>{data?.seeProfile?.totalFollowing}</Strong> following</Following>
+                        </FollowContainer>
+                        <RealName>{data?.seeProfile?.firstName} {data?.seeProfile?.lastName}</RealName>
+                        {data?.seeProfile?.bio ? (
+                            <BioText>{data?.seeProfile?.bio}</BioText>
+                        ) : null}
+                    </BottomBox>
                 </ProfileDescContainer>
             </ProfileContainer>
             <PhotosContainer>
@@ -151,7 +282,11 @@ function Profile() {
                     <PhotoContainer key={index} bgImage={photo.file}>
                         <Icons>
                             <Icon>
-                                <FaRegHeart size={22} />
+                                {photo.isLiked ? (
+                                    <FaHeart size={22} />
+                                ) : (
+                                    <FaRegHeart size={22} />
+                                )}
                                 <IconText>{photo.likes}</IconText>
                             </Icon>
                             <Icon>

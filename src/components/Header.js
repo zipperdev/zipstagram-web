@@ -56,13 +56,17 @@ function Header() {
         <StyledHeader>
             <Wrapper>
                 <div>
-                    <AiOutlineInstagram size={34} />
+                    <Link to="/">
+                        <AiOutlineInstagram size={34} />
+                    </Link>
                 </div>
                 <div>
                     {isLoggedIn ? (
                         <IconsContiner>
                             <Icon>
-                                <FiHome size={18} />
+                                <Link to="/">
+                                    <FiHome size={18} />
+                                </Link>
                             </Icon>
                             <Icon>
                                 <FiCompass size={18} />

@@ -35,11 +35,15 @@ export const GlobalStyles = createGlobalStyle`
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
         color: ${props => props.theme.fontColor};
     }
-    input {
+    input, 
+    button {
         all: unset;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
     }
     text {
         color: inherit;
+    }
+    a {
+        color: ${props => props.theme.fontColor};
     }
 `;

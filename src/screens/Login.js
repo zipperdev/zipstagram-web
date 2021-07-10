@@ -9,7 +9,7 @@ import HeaderContainer from "../components/auth/HeaderContainer";
 import AuthLayout from "../components/auth/AuthLayout";
 import TopBox from "../components/auth/FormBox";
 import BottomBox from "../components/auth/BottomBox";
-import Button from "../components/auth/SubmitButton";
+import Button from "../components/Button";
 import Input from "../components/auth/Input";
 import routes from "../routes";
 
@@ -82,7 +82,7 @@ function Login() {
                     <Input onChange={clearLoginError} errorMessage={errors?.password?.message} ref={register({
                         required: "Password is required."
                     })} name="password" type="password" placeholder="Password" />
-                    <Button errorResult={errors?.result?.message} type="submit" value={loading ? "Loading..." : "Log In"} disabled={!formState.isValid || loading} />
+                    <Button errorResult={errors?.result?.message} type="submit" disabled={!formState.isValid || loading}>{loading ? "Loading..." : "Log In"}</Button>
                 </form>
             </TopBox>
             <BottomBox actionText="Don't have an acount?" link={routes.signUp} linkText="Sign Up" />

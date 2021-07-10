@@ -9,7 +9,7 @@ import HeaderContainer from "../components/auth/HeaderContainer";
 import AuthLayout from "../components/auth/AuthLayout";
 import TopBox from "../components/auth/FormBox";
 import BottomBox from "../components/auth/BottomBox";
-import Button from "../components/auth/SubmitButton";
+import Button from "../components/Button";
 import Input from "../components/auth/Input";
 import routes from "../routes";
 
@@ -125,7 +125,7 @@ function SignUp() {
                             return currrentValue === password;
                         }
                     })} errorMessage={errors?.confrimPassword?.type === "validate" ? "Password confrimation doesn't match." : errors?.confrimPassword?.message} name="confrimPassword" type="password" placeholder="Password Confrim" />
-                    <Button errorResult={errors?.result?.message} type="submit" value={loading ? "Loading..." : "Sign Up"} disabled={!formState.isValid || loading} />
+                    <Button errorResult={errors?.result?.message} type="submit" disabled={!formState.isValid || loading}>{loading ? "Loading..." : "Sign Up"}</Button>
                 </form>
             </TopBox>
             <BottomBox actionText="Already have an acount?" link={routes.home} linkText="Log In" />
